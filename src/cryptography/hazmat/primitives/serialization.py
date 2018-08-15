@@ -57,6 +57,7 @@ def load_ssh_public_key(data, backend):
         b'ecdsa-sha2-nistp256', b'ecdsa-sha2-nistp384', b'ecdsa-sha2-nistp521',
     ]:
         loader = _load_ssh_ecdsa_public_key
+        key_type = key_type.split(b'-')[2]
     else:
         raise UnsupportedAlgorithm('Key type is not supported.')
 
