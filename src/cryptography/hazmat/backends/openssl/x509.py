@@ -510,6 +510,37 @@ class _SignedCertificateTimestamp(object):
         ).replace(microsecond=milliseconds * 1000)
 
     @property
+    def signature_hash_algorithm(self):
+        oid = self.signature_algorithm_oid
+        try:
+            return x509._SIG_OIDS_TO_HASH[oid]
+        except KeyError:
+            raise UnsupportedAlgorithm(
+                "Signature algorithm OID:{0} not recognized".format(oid)
+            )
+
+    @property
+    def signature_algorithm_oid(self):
+        nid = self._backend._lib.SCT_get_signature_nid(self._sct)
+        if nid == self._backend._lib.NID_undef:
+            raise UnsupportedAlgorithm(
+                "Signature algorithm NID:{0} not recognized".format(nid)
+            )
+
+        obj = self._backend._lib.OBJ_nid2obj(nid)
+        self._backend.openssl_assert(obj != self._backend._ffi.NULL)
+
+        oid = _obj2txt(self._backend, obj)
+        return x509.ObjectIdentifier(oid)
+
+    @property
+    def signature(self):
+        out = self._backend._ffi.new("unsigned char **")
+        signature_length = self._backend._lib.SCT_get0_signature(self._sct, out)
+        assert signature_length >= 0
+        return self._backend._ffi.buffer(out[0], signature_length)[:]
+
+    @property
     def entry_type(self):
         entry_type = self._backend._lib.SCT_get_log_entry_type(self._sct)
         # We currently only support loading SCTs from the X.509 extension, so

@@ -46,6 +46,10 @@ size_t SCT_get0_log_id(const SCT *, unsigned char **);
 
 uint64_t SCT_get_timestamp(const SCT *);
 
+size_t SCT_get0_signature(const SCT *, unsigned char **);
+
+int SCT_get_signature_nid(const SCT *);
+
 int SCT_set_source(SCT *, sct_source_t);
 
 int sk_SCT_num(const Cryptography_STACK_OF_SCT *);
@@ -82,6 +86,8 @@ sct_version_t (*SCT_get_version)(const SCT *) = NULL;
 ct_log_entry_type_t (*SCT_get_log_entry_type)(const SCT *) = NULL;
 size_t (*SCT_get0_log_id)(const SCT *, unsigned char **) = NULL;
 uint64_t (*SCT_get_timestamp)(const SCT *) = NULL;
+size_t (*SCT_get0_signature)(const SCT *, unsigned char **) = NULL;
+int (*SCT_get_signature_nid)(const SCT *) = NULL;
 
 int (*SCT_set_source)(SCT *, sct_source_t) = NULL;
 

@@ -40,6 +40,12 @@ class SignedCertificateTimestamp(object):
         """
 
     @abc.abstractproperty
+    def signature(self):
+        """
+        Returns the signature bytes.
+        """
+
+    @abc.abstractproperty
     def entry_type(self):
         """
         Returns whether this is an SCT for a certificate or pre-certificate.

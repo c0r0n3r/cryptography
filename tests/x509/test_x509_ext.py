@@ -4477,6 +4477,13 @@ class TestPrecertificateSignedCertificateTimestampsExtension(object):
         assert sct.timestamp == datetime.datetime(
             2016, 11, 17, 1, 56, 25, 396000
         )
+        assert sct.signature == (
+            b"0E\x02!\x00\xb8\x03\xad4\xf6\xfc\x0f,\xff\x84\xa0"
+            b"\x86\xe5\xd7\xcfZ\xf0\n\x07bj\x7f\xb3\xa6Dd\xf1"
+            b"\x95\xa4HE\x11\x02 /a\x8dS\x1boJ\xb8\n"
+            b"g\xb2\x07\xe1\x8fm\xad\xd1\x04J^\xb3\x89\xef|`"
+            b"\xc2hS\xf9=\x1fm'"
+        )
         assert (
             sct.entry_type ==
             x509.certificate_transparency.LogEntryType.PRE_CERTIFICATE
